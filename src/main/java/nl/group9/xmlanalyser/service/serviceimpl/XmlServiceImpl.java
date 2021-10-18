@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -103,6 +104,8 @@ public class XmlServiceImpl implements XmlService {
             xml.setState(State.FINISHED.getValue());
             xmlRepository.save(xml);
 
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("No such file or directory");
         } catch (Exception e) {
             xml.setState(State.FAILED.getValue());
             xml.setFailedSummary(e.getMessage());

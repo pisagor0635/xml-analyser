@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Data
 public class Details {
-
     private Date firstPost;
     private Date lastPost;
     private int totalPosts;

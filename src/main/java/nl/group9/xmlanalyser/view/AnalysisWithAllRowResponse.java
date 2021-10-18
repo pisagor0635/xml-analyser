@@ -8,11 +8,8 @@ import java.util.List;
 
 @Data
 public class AnalysisWithAllRowResponse {
-
     private long id;
     private String state;
     private String failedSummary;
-
     List<RowView> posts;
-
 }
