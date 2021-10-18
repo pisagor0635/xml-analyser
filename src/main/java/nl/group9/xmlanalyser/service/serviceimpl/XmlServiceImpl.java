@@ -18,6 +18,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ public class XmlServiceImpl implements XmlService {
     private final XmlRepository xmlRepository;
     private final RowRepository rowRepository;
     private final UtilService utilService;
+
+    private Row row;
 
     @Override
     public Xml saveXml(Xml xml) {
@@ -55,43 +58,13 @@ public class XmlServiceImpl implements XmlService {
 
                 Node node = nodeList.item(temp);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Row row = new Row();
+
+                    row = new Row();
 
                     Element element = (Element) node;
 
-                    if (utilService.checkNullOrEmpty(element.getAttribute("Id"))) {
-                        row.setRowId(Long.parseLong(element.getAttribute("Id")));
-                    }
-                    if (utilService.checkNullOrEmpty(element.getAttribute("OwnerUserId"))) {
-                        row.setOwnerUserId(Long.parseLong(element.getAttribute("OwnerUserId")));
-                    }
-                    if (utilService.checkNullOrEmpty(element.getAttribute("AcceptedAnswerId"))) {
-                        row.setAcceptedAnswerId(Long.parseLong(element.getAttribute("AcceptedAnswerId")));
-                    }
+                    prepareRow(row, element);
 
-                    row.setBody(element.getAttribute("Body"));
-                    row.setCreationDate(utilService.stringToDate(element.getAttribute("CreationDate")));
-                    row.setLastActivityDate(utilService.stringToDate(element.getAttribute("LastActivityDate")));
-
-                    if (utilService.checkNullOrEmpty(element.getAttribute("ParentId"))) {
-                        row.setParentId(Long.parseLong(element.getAttribute("ParentId")));
-                    }
-                    if (utilService.checkNullOrEmpty(element.getAttribute("PostTypeId"))) {
-                        row.setPostTypeId(Long.parseLong(element.getAttribute("PostTypeId")));
-                    }
-
-                    if (utilService.checkNullOrEmpty(element.getAttribute("Score"))) {
-                        row.setScore(Integer.parseInt(element.getAttribute("Score")));
-                    }
-                    row.setTitle(element.getAttribute("Title"));
-
-                    if (utilService.checkNullOrEmpty(element.getAttribute("Id"))) {
-                        row.setRowId(Integer.parseInt(element.getAttribute("Id")));
-                    }
-
-                    if (utilService.checkNullOrEmpty(element.getAttribute("ViewCount"))) {
-                        row.setViewCount(Integer.parseInt(element.getAttribute("ViewCount")));
-                    }
                     row.setXml(xml);
                     rowRepository.save(row);
                 }
@@ -110,6 +83,48 @@ public class XmlServiceImpl implements XmlService {
             xml.setState(State.FAILED.getValue());
             xml.setFailedSummary(e.getMessage());
             xmlRepository.save(xml);
+        }
+    }
+
+    private void prepareRow(Row row, Element element) {
+
+        try {
+            if (utilService.checkNullOrEmpty(element.getAttribute("Id"))) {
+                row.setRowId(Long.parseLong(element.getAttribute("Id")));
+            }
+            if (utilService.checkNullOrEmpty(element.getAttribute("OwnerUserId"))) {
+                row.setOwnerUserId(Long.parseLong(element.getAttribute("OwnerUserId")));
+            }
+            if (utilService.checkNullOrEmpty(element.getAttribute("AcceptedAnswerId"))) {
+                row.setAcceptedAnswerId(Long.parseLong(element.getAttribute("AcceptedAnswerId")));
+            }
+
+            row.setBody(element.getAttribute("Body"));
+            row.setCreationDate(utilService.stringToDate(element.getAttribute("CreationDate")));
+            row.setLastActivityDate(utilService.stringToDate(element.getAttribute("LastActivityDate")));
+
+            if (utilService.checkNullOrEmpty(element.getAttribute("ParentId"))) {
+                row.setParentId(Long.parseLong(element.getAttribute("ParentId")));
+            }
+            if (utilService.checkNullOrEmpty(element.getAttribute("PostTypeId"))) {
+                row.setPostTypeId(Long.parseLong(element.getAttribute("PostTypeId")));
+            }
+
+            if (utilService.checkNullOrEmpty(element.getAttribute("Score"))) {
+                row.setScore(Integer.parseInt(element.getAttribute("Score")));
+            }
+            row.setTitle(element.getAttribute("Title"));
+
+            if (utilService.checkNullOrEmpty(element.getAttribute("Id"))) {
+                row.setRowId(Integer.parseInt(element.getAttribute("Id")));
+            }
+
+            if (utilService.checkNullOrEmpty(element.getAttribute("ViewCount"))) {
+                row.setViewCount(Integer.parseInt(element.getAttribute("ViewCount")));
+            }
+
+        } catch (ParseException pe) {
+            pe.printStackTrace();
         }
     }
 

@@ -10,11 +10,11 @@ import java.io.File;
 
 
 @DisplayName("XmlServiceTest")
-public class XmlServiceTest {
+class XmlServiceTest {
 
     @DisplayName("parseXml")
     @Test
-    public void parseXml() {
+    void parseXml() {
 
         XmlService xmlService = new XmlServiceImpl(null, null, null);
 
@@ -22,7 +22,7 @@ public class XmlServiceTest {
 
         Xml xml = new Xml();
 
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> xmlService.parseXml(xml,file));
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> xmlService.parseXml(xml, file));
 
         Assertions.assertEquals("No such file or directory", exception.getMessage());
 

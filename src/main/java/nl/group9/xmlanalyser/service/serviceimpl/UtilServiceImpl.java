@@ -1,6 +1,5 @@
 package nl.group9.xmlanalyser.service.serviceimpl;
 
-import lombok.extern.slf4j.Slf4j;
 import nl.group9.xmlanalyser.service.UtilService;
 import org.springframework.stereotype.Service;
 

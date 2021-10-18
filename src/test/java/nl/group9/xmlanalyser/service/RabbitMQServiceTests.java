@@ -7,11 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("RabbitMQServiceTests")
-public class RabbitMQServiceTests {
+ class RabbitMQServiceTests {
 
     @DisplayName("processXml")
     @Test
-    public void processXml() {
+    void processXml() {
 
         RabbitMQService rabbitMQService = new RabbitMQServiceImpl(null, null);
 
