@@ -14,7 +14,7 @@ services:
       - POSTGRES_PASSWORD=compose-postgres
 
   app:
-    image: 'docker-spring-boot-postgres-rabbit2:latest'
+    image: 'pisagor/xml-analyser:latest'
     build:
       context: .
     expose:
