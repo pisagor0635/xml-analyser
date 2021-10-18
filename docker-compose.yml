@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: xmlparser-rabbit
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: xmlparser-db
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+
+  app:
+    image: 'docker-spring-boot-postgres-rabbit2:latest'
+    build:
+      context: .
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
+    container_name: xmlparser-service
+    depends_on:
+      - rabbitmq
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_RABBITMQ_HOST=rabbitmq
